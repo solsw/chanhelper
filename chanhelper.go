@@ -1,15 +1,13 @@
-// Package chanhelper contains channel helpers.
 package chanhelper
 
 import (
 	"sync"
 )
 
-// PeekAndReceive checks whether the channel has a value and receives the value if possible.
-//
-// If the channel has a value, the function receives the value from the channel and returns the value and 'true', 'true'.
-// If the channel is open and has no value or the channel is nil, the function returns a zero value and 'false', 'true'.
-// If the channel is closed and empty, the function returns a zero value and 'false', 'false'.
+// PeekAndReceive checks whether the channel has a value and receives the value if possible:
+//   - if 'ch' has a value, PeekAndReceive receives the value and returns the value and 'true', 'true';
+//   - if 'ch' is open and has no value or the channel is nil, PeekAndReceive returns a zero value and 'false', 'true';
+//   - if 'ch' is closed and empty, PeekAndReceive returns a zero value and 'false', 'false'.
 func PeekAndReceive[T any](ch <-chan T) (value T, ok, open bool) {
 	select {
 	case value, open = <-ch:
@@ -54,7 +52,8 @@ func merge4[T any](in1, in2, in3, in4 <-chan T, out chan<- T) {
 }
 
 // Merge4 merges four channels into a single channel to receive the values from.
-// Pass corresponding nils if there are only two or three channels to merge (look at Merge function as an example).
+//
+// Pass corresponding nils if there are only two or three channels to merge (look at [Merge] function as an example).
 func Merge4[T any](in1, in2, in3, in4 <-chan T) <-chan T {
 	out := make(chan T)
 	go merge4(in1, in2, in3, in4, out)
@@ -116,7 +115,7 @@ func MergeBuf[T any](ins ...chan T) <-chan T {
 	}
 }
 
-// TToAny converts chan T to chan any to receive the values from.
+// TToAny converts 'chan T' to 'chan any' to receive the values from.
 func TToAny[T any](chT <-chan T) <-chan any {
 	chAny := make(chan any)
 	go func() {
@@ -128,8 +127,11 @@ func TToAny[T any](chT <-chan T) <-chan any {
 	return chAny
 }
 
-// AnyToT converts chan any to chan T to receive the values from.
-// If some element from 'chAny' cannot be casted to type T a run-time panic occurs during receiving from the result channel.
+// AnyToT converts 'chan any' to 'chan T' to receive the values from.
+//
+// If some element from 'chAny' cannot be casted to type T a [run-time panic] occurs during receiving from the result channel.
+//
+// [run-time panic]: https://go.dev/ref/spec#Run_time_panics
 func AnyToT[T any](chAny <-chan any) <-chan T {
 	chT := make(chan T)
 	go func() {
