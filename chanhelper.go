@@ -6,8 +6,10 @@ import (
 
 // PeekAndReceive checks whether the channel has a value and receives the value if possible:
 //   - if 'ch' has a value, PeekAndReceive receives the value and returns the value and 'true', 'true';
-//   - if 'ch' is open and has no value or the channel is nil, PeekAndReceive returns a zero value and 'false', 'true';
-//   - if 'ch' is closed and empty, PeekAndReceive returns a zero value and 'false', 'false'.
+//   - if 'ch' is open and has no value or the channel is nil, PeekAndReceive returns a [zero value] and 'false', 'true';
+//   - if 'ch' is closed and empty, PeekAndReceive returns a [zero value] and 'false', 'false'.
+//
+// [zero value]: https://go.dev/ref/spec#The_zero_value
 func PeekAndReceive[T any](ch <-chan T) (value T, ok, open bool) {
 	select {
 	case value, open = <-ch:
