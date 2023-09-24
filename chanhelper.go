@@ -54,7 +54,6 @@ func merge4[T any](in1, in2, in3, in4 <-chan T, out chan<- T) {
 }
 
 // Merge4 merges four channels into a single channel to receive the values from.
-//
 // Pass corresponding nils if there are only two or three channels to merge (look at [Merge] function as an example).
 func Merge4[T any](in1, in2, in3, in4 <-chan T) <-chan T {
 	out := make(chan T)
@@ -130,7 +129,6 @@ func TToAny[T any](chT <-chan T) <-chan any {
 }
 
 // AnyToT converts 'chan any' to 'chan T' to receive the values from.
-//
 // If some element from 'chAny' cannot be casted to type T a [run-time panic] occurs during receiving from the result channel.
 //
 // [run-time panic]: https://go.dev/ref/spec#Run_time_panics
